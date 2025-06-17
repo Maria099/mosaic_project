@@ -1,0 +1,558 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.4
+-- Dumped by pg_dump version 17.4
+
+-- Started on 2025-06-17 09:25:28
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 223 (class 1259 OID 16994)
+-- Name: material_suppliers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.material_suppliers (
+    material_id integer NOT NULL,
+    supplier_id integer NOT NULL
+);
+
+
+ALTER TABLE public.material_suppliers OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 16963)
+-- Name: material_types; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.material_types (
+    material_type_id integer NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.material_types OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16962)
+-- Name: material_types_material_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.material_types_material_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.material_types_material_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4844 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: material_types_material_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.material_types_material_type_id_seq OWNED BY public.material_types.material_type_id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16972)
+-- Name: materials; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.materials (
+    material_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    material_type_id integer,
+    price_per_unit numeric(10,2),
+    quantity_in_stock numeric(10,2),
+    min_quantity numeric(10,2),
+    quantity_per_package numeric(10,2),
+    unit_of_measurement character varying(50)
+);
+
+
+ALTER TABLE public.materials OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16971)
+-- Name: materials_material_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.materials_material_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.materials_material_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4845 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: materials_material_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.materials_material_id_seq OWNED BY public.materials.material_id;
+
+
+--
+-- TOC entry 225 (class 1259 OID 17010)
+-- Name: product_types; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_types (
+    product_type_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    coefficient numeric(10,2)
+);
+
+
+ALTER TABLE public.product_types OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 17009)
+-- Name: product_types_product_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_types_product_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.product_types_product_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4846 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: product_types_product_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_types_product_type_id_seq OWNED BY public.product_types.product_type_id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 16986)
+-- Name: suppliers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.suppliers (
+    supplier_id integer NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.suppliers OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 16985)
+-- Name: suppliers_supplier_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.suppliers_supplier_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.suppliers_supplier_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4847 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: suppliers_supplier_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.suppliers_supplier_id_seq OWNED BY public.suppliers.supplier_id;
+
+
+--
+-- TOC entry 4660 (class 2604 OID 16966)
+-- Name: material_types material_type_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_types ALTER COLUMN material_type_id SET DEFAULT nextval('public.material_types_material_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 4661 (class 2604 OID 16975)
+-- Name: materials material_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.materials ALTER COLUMN material_id SET DEFAULT nextval('public.materials_material_id_seq'::regclass);
+
+
+--
+-- TOC entry 4663 (class 2604 OID 17013)
+-- Name: product_types product_type_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_types ALTER COLUMN product_type_id SET DEFAULT nextval('public.product_types_product_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 4662 (class 2604 OID 16989)
+-- Name: suppliers supplier_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.suppliers ALTER COLUMN supplier_id SET DEFAULT nextval('public.suppliers_supplier_id_seq'::regclass);
+
+
+--
+-- TOC entry 4836 (class 0 OID 16994)
+-- Dependencies: 223
+-- Data for Name: material_suppliers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.material_suppliers (material_id, supplier_id) FROM stdin;
+13	1
+2	2
+2	3
+6	1
+15	4
+5	5
+1	6
+15	7
+7	3
+12	6
+1	4
+14	1
+16	8
+12	4
+3	3
+6	7
+12	9
+4	3
+11	10
+17	8
+10	9
+8	8
+1	5
+11	11
+3	2
+5	3
+8	1
+17	7
+18	7
+9	14
+20	7
+3	6
+16	11
+5	12
+15	11
+4	6
+13	9
+6	13
+14	9
+2	4
+10	14
+18	13
+7	10
+18	15
+4	2
+10	19
+10	13
+14	19
+14	16
+19	19
+11	20
+16	15
+13	19
+11	15
+7	17
+15	20
+17	13
+8	17
+7	13
+3	18
+20	13
+5	18
+9	13
+1	12
+9	19
+4	12
+19	9
+9	16
+18	17
+20	18
+16	12
+6	17
+19	16
+17	18
+20	16
+2	18
+8	10
+19	18
+13	16
+12	12
+\.
+
+
+--
+-- TOC entry 4831 (class 0 OID 16963)
+-- Dependencies: 218
+-- Data for Name: material_types; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.material_types (material_type_id, name) FROM stdin;
+1	Пластичные материалы
+2	Добавка
+3	Глазурь
+4	Пигмент
+5	Электролит
+\.
+
+
+--
+-- TOC entry 4833 (class 0 OID 16972)
+-- Dependencies: 220
+-- Data for Name: materials; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.materials (material_id, name, material_type_id, price_per_unit, quantity_in_stock, min_quantity, quantity_per_package, unit_of_measurement) FROM stdin;
+1	Глина	1	15.29	1570.00	5500.00	30.00	кг
+2	Каолин	1	18.20	1030.00	3500.00	25.00	кг
+3	Гидрослюда	1	17.20	2147.00	3500.00	25.00	кг
+4	Монтмориллонит	1	17.67	3000.00	3000.00	30.00	кг
+5	Перлит	2	13.99	150.00	1000.00	50.00	л
+6	Стекло	2	2.40	3000.00	1500.00	500.00	кг
+7	Дегидратированная глина	2	21.95	3000.00	2500.00	20.00	кг
+8	Шамот	2	27.50	2300.00	1960.00	20.00	кг
+9	Техническая сода	5	54.55	1200.00	1500.00	25.00	кг
+10	Жидкое стекло	5	76.59	500.00	1500.00	15.00	кг
+11	Кварц	3	375.96	1500.00	2500.00	10.00	кг
+12	Полевой шпат	3	15.99	750.00	1500.00	100.00	кг
+13	Краска-раствор	4	200.90	1496.00	2500.00	5.00	л
+14	Порошок цветной	4	84.39	511.00	1750.00	25.00	кг
+15	Кварцевый песок	2	4.29	3000.00	1600.00	50.00	кг
+16	Жильный кварц	2	18.60	2556.00	1600.00	25.00	кг
+17	Барий углекислый	3	303.64	340.00	1500.00	25.00	кг
+18	Бура техническая	3	125.99	165.00	1300.00	25.00	кг
+19	Углещелочной реагент	5	3.45	450.00	1100.00	25.00	кг
+20	Пирофосфат натрия	5	700.99	356.00	1200.00	25.00	кг
+\.
+
+
+--
+-- TOC entry 4838 (class 0 OID 17010)
+-- Dependencies: 225
+-- Data for Name: product_types; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.product_types (product_type_id, name, coefficient) FROM stdin;
+1	Тип продукции 1	1.20
+2	Тип продукции 2	8.59
+3	Тип продукции 3	3.45
+4	Тип продукции 4	5.60
+\.
+
+
+--
+-- TOC entry 4835 (class 0 OID 16986)
+-- Dependencies: 222
+-- Data for Name: suppliers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.suppliers (supplier_id, name) FROM stdin;
+1	Арсенал
+2	Железногорская руда
+3	ВоронежРудоКомбинат
+4	БрянскСтройресурс
+5	ГорТехРазработка
+6	Белая гора
+7	КамчаткаСтройМинералы
+8	Горная компания
+9	КурскРесурс
+10	МосКарьер
+11	Карелия добыча
+12	Смоленский добывающий комбинат
+13	Сапфир
+14	Минерал Ресурс
+15	Нижегородская разработка
+16	ХимБытСервис
+17	Стройкомплект
+18	Тульский обрабатывающий завод
+19	Московский ХимЗавод
+20	Речная долина
+\.
+
+
+--
+-- TOC entry 4848 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: material_types_material_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.material_types_material_type_id_seq', 5, true);
+
+
+--
+-- TOC entry 4849 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: materials_material_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.materials_material_id_seq', 20, true);
+
+
+--
+-- TOC entry 4850 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: product_types_product_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.product_types_product_type_id_seq', 4, true);
+
+
+--
+-- TOC entry 4851 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: suppliers_supplier_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.suppliers_supplier_id_seq', 20, true);
+
+
+--
+-- TOC entry 4677 (class 2606 OID 16998)
+-- Name: material_suppliers material_suppliers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_suppliers
+    ADD CONSTRAINT material_suppliers_pkey PRIMARY KEY (material_id, supplier_id);
+
+
+--
+-- TOC entry 4665 (class 2606 OID 16970)
+-- Name: material_types material_types_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_types
+    ADD CONSTRAINT material_types_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 4667 (class 2606 OID 16968)
+-- Name: material_types material_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_types
+    ADD CONSTRAINT material_types_pkey PRIMARY KEY (material_type_id);
+
+
+--
+-- TOC entry 4669 (class 2606 OID 16979)
+-- Name: materials materials_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.materials
+    ADD CONSTRAINT materials_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 4671 (class 2606 OID 16977)
+-- Name: materials materials_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.materials
+    ADD CONSTRAINT materials_pkey PRIMARY KEY (material_id);
+
+
+--
+-- TOC entry 4679 (class 2606 OID 17017)
+-- Name: product_types product_types_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_types
+    ADD CONSTRAINT product_types_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 4681 (class 2606 OID 17015)
+-- Name: product_types product_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_types
+    ADD CONSTRAINT product_types_pkey PRIMARY KEY (product_type_id);
+
+
+--
+-- TOC entry 4673 (class 2606 OID 16993)
+-- Name: suppliers suppliers_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.suppliers
+    ADD CONSTRAINT suppliers_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 4675 (class 2606 OID 16991)
+-- Name: suppliers suppliers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.suppliers
+    ADD CONSTRAINT suppliers_pkey PRIMARY KEY (supplier_id);
+
+
+--
+-- TOC entry 4683 (class 2606 OID 16999)
+-- Name: material_suppliers material_suppliers_material_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_suppliers
+    ADD CONSTRAINT material_suppliers_material_id_fkey FOREIGN KEY (material_id) REFERENCES public.materials(material_id);
+
+
+--
+-- TOC entry 4684 (class 2606 OID 17004)
+-- Name: material_suppliers material_suppliers_supplier_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.material_suppliers
+    ADD CONSTRAINT material_suppliers_supplier_id_fkey FOREIGN KEY (supplier_id) REFERENCES public.suppliers(supplier_id);
+
+
+--
+-- TOC entry 4682 (class 2606 OID 16980)
+-- Name: materials materials_material_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.materials
+    ADD CONSTRAINT materials_material_type_id_fkey FOREIGN KEY (material_type_id) REFERENCES public.material_types(material_type_id);
+
+
+-- Completed on 2025-06-17 09:25:28
+
+--
+-- PostgreSQL database dump complete
+--
+
